@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GridCredits — Earn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F4EE; --navy:#18284D; --coral:#FF6257; --yellow:#FFC94A; --green:#3F8F5C;
+  --border:rgba(24,40,77,0.14);
+  --sans:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+body{background:var(--cream); color:var(--navy); font-family:var(--sans); -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+img{max-width:100%; display:block;}
+.wrap{max-width:1240px; margin:0 auto; padding:0 32px;}
+a{color:inherit; text-decoration:none;}
+section{padding:70px 0;}
+button{font-family:var(--sans); cursor:default;}
+
+.thumb{position:relative; background:var(--cream); border:1px solid var(--border); overflow:hidden;}
+.thumb::before{content:'';position:absolute; inset:0; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:8px 8px; opacity:.4;}
+
+/* navbar */
+header{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:rgba(247,244,238,.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--border);}
+nav{display:flex; align-items:center; justify-content:space-between; height:76px;}
+.logo{display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px;}
+.mark{display:grid; grid-template-columns:repeat(2,7px); gap:3px;}
+.mark span{width:7px; height:7px;}
+.mark span:nth-child(1){background:var(--navy);} .mark span:nth-child(2){background:var(--coral);}
+.mark span:nth-child(3){background:var(--yellow);} .mark span:nth-child(4){background:var(--navy);}
+.navlinks{display:flex; gap:34px; font-size:14px; font-weight:500;}
+.navlinks a{opacity:.6; transition:opacity .15s;} .navlinks a:hover{opacity:1;}
+.navlinks a.active{opacity:1; position:relative;}
+.navlinks a.active::after{content:'';position:absolute; left:0; right:0; bottom:-26px; height:2px; background:var(--coral);}
+.navright{display:flex; align-items:center; gap:20px;}
+.btn-navy{background:var(--navy); color:var(--cream); font-size:13px; font-weight:500; padding:10px 18px; border:none;}
+.hamburger{display:none; flex-direction:column; gap:4px; background:none; border:none; cursor:pointer;}
+.hamburger span{width:22px; height:2px; background:var(--navy);}
+
+/* header */
+.page-header{padding:72px 0 60px; border-bottom:1px solid var(--border);}
+.ph-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:center;}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.14em; opacity:.55; margin-bottom:18px;}
+h1.title{font-size:clamp(48px,7vw,80px); font-weight:700; line-height:.95; letter-spacing:-.02em;}
+.ph-sub{font-size:19px; font-weight:500; margin-top:16px;}
+.ph-desc{font-size:15px; line-height:1.6; opacity:.68; margin-top:12px; max-width:50ch;}
+.ph-pattern{position:relative; aspect-ratio:1.4; border:1px solid var(--border);}
+.ph-pattern::before{content:'';position:absolute; inset:0; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:22px 22px; opacity:.4;}
+.ph-sq{position:absolute; width:8px; height:8px;}
+
+/* section titles */
+.section-title{font-size:28px; font-weight:700; letter-spacing:-.01em;}
+
+/* credits summary */
+.summary{border:1px solid var(--border); display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr;}
+.sum-col{padding:32px 30px; border-left:1px solid var(--border);}
+.sum-col:first-child{border-left:none;}
+.sum-label{font-family:var(--mono); font-size:11px; letter-spacing:.1em; opacity:.55;}
+.sum-col:first-child .sum-num{font-size:clamp(38px,4vw,52px); font-weight:700; margin-top:12px;}
+.sum-num{font-size:26px; font-weight:700; margin-top:12px;}
+.sum-unit{font-family:var(--mono); font-size:12px; opacity:.55; margin-top:4px;}
+
+/* characters heading row */
+.chars-head{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:10px;}
+.chars-meta{font-family:var(--mono); font-size:12px; opacity:.55; text-align:right;}
+.chars-toolbar{display:flex; justify-content:flex-end; margin-bottom:28px;}
+.search{border:1px solid var(--border); background:transparent; padding:10px 14px; font-family:var(--mono); font-size:12px; width:220px; color:var(--navy);}
+.search::placeholder{color:var(--navy); opacity:.4;}
+
+/* table */
+.table-wrap{overflow-x:auto; border-top:1px solid var(--border);}
+table{width:100%; border-collapse:collapse; min-width:720px;}
+th{text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:.06em; opacity:.5; font-weight:500; padding:14px 12px; border-bottom:1px solid var(--border);}
+td{padding:14px 12px; border-bottom:1px solid var(--border); font-size:14px; vertical-align:middle;}
+.col-id{font-family:var(--mono); font-size:13px; opacity:.7;}
+.row-char{display:flex; align-items:center; gap:12px;}
+.row-char .thumb{width:36px; height:36px; flex-shrink:0;}
+.status{display:inline-flex; align-items:center; gap:7px; font-family:var(--mono); font-size:11px; letter-spacing:.04em;}
+.status i{width:6px; height:6px; display:inline-block; border-radius:50%;}
+.status.active i{background:var(--green);}
+.status.inactive i{background:var(--coral);}
+.act-btn{padding:8px 14px; font-size:12px; font-weight:500; border:1px solid var(--navy); background:transparent; color:var(--navy);}
+.act-btn.is-active{border-color:var(--border); color:var(--navy); opacity:.4;}
+.act-btn.is-activate{background:var(--navy); color:var(--cream); border-color:var(--navy);}
+.row-actions{display:flex; align-items:center; gap:16px;}
+.dots{font-size:16px; opacity:.4; letter-spacing:1px;}
+
+.table-foot{display:flex; justify-content:space-between; align-items:center; margin-top:20px; font-family:var(--mono); font-size:12px; opacity:.6;}
+.pagination-frame{display:flex; border:1px solid var(--border); opacity:.4;}
+.pagination-frame span{width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-left:1px solid var(--border);}
+.pagination-frame span:first-child{border-left:none;}
+.pagination-frame span.on{opacity:1; font-weight:700;}
+
+/* empty states */
+.empty-state{padding:56px 12px; text-align:center;}
+.empty-title{font-family:var(--mono); font-size:12px; letter-spacing:.08em; opacity:.55; margin-bottom:10px;}
+.empty-state p{font-size:14px; opacity:.6; max-width:40ch; margin:0 auto;}
+.empty-row td{border-bottom:none;}
+
+/* activity */
+.act-head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;}
+.act-head a{font-family:var(--mono); font-size:12px; opacity:.6;}
+.activity-list{border-top:1px solid var(--border);}
+.activity-row{display:grid; grid-template-columns:1fr auto auto; gap:24px; align-items:center; padding:16px 0; border-bottom:1px solid var(--border);}
+.activity-day{font-family:var(--mono); font-size:12px; opacity:.55; letter-spacing:.04em;}
+.activity-amt{font-weight:700; font-size:15px;}
+.activity-char{font-size:13px; opacity:.6; text-align:right;}
+
+/* how it works (text only) */
+.how-earn{display:grid; grid-template-columns:0.7fr 1fr; gap:70px;}
+.how-copy p{font-size:15px; line-height:1.7; opacity:.7; max-width:52ch; margin-bottom:18px;}
+
+/* CTA */
+.cta{background:var(--navy); color:var(--cream);}
+.cta .wrap{padding:70px 32px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:30px;}
+.cta h2{font-size:30px; font-weight:700; line-height:1.1;}
+.cta p{opacity:.65; font-size:14px; margin-top:10px; max-width:36ch;}
+.cta-actions{display:flex; gap:14px;}
+.btn-cream{background:var(--cream); color:var(--navy); padding:14px 22px; font-size:13px; font-weight:500;}
+.btn-outline{border:1px solid var(--cream); padding:14px 22px; font-size:13px; font-weight:500;}
+
+/* footer */
+footer{background:var(--navy); color:var(--cream);}
+footer .wrap{display:flex; justify-content:space-between; align-items:center; padding:40px 32px;}
+.foot-links{display:flex; gap:26px; font-size:13px; opacity:.7;}
+.foot-left span{display:block; font-family:var(--mono); font-size:11px; opacity:.5; margin-top:4px;}
+
+@media(max-width:900px){
+  .ph-grid{grid-template-columns:1fr;}
+  .ph-pattern{display:none;}
+  .summary{grid-template-columns:1fr 1fr;}
+  .sum-col:nth-child(3){border-left:none;}
+  .sum-col:nth-child(n+3){border-top:1px solid var(--border);}
+  .how-earn{grid-template-columns:1fr; gap:36px;}
+}
+@media(max-width:640px){
+  .wrap{padding:0 20px;}
+  .navlinks,.navright .btn-navy{display:none;}
+  .hamburger{display:flex;}
+  .page-header{padding:48px 0 40px;}
+  .section-title{font-size:22px;}
+  .summary{grid-template-columns:1fr;}
+  .sum-col{border-left:none !important; border-top:1px solid var(--border);}
+  .sum-col:first-child{border-top:none;}
+  .cta .wrap{padding:50px 24px;}
+  .search{width:100%;}
+  .chars-toolbar{justify-content:flex-start;}
+  .activity-row{grid-template-columns:1fr auto; row-gap:4px;}
+  .activity-char{grid-column:1/2; text-align:left;}
+  footer .wrap{flex-direction:column; align-items:flex-start; gap:16px;}
+}
+/* wallet modal (visual only) */
+.wm{position:fixed; inset:0; background:rgba(24,40,77,.45); display:none; align-items:center; justify-content:center; z-index:200; padding:20px;}
+.wm.open{display:flex;}
+.wm-box{background:var(--cream); border:1px solid var(--border); width:100%; max-width:380px; padding:28px;}
+.wm-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.wm-head h3{font-size:16px; font-weight:700; letter-spacing:.04em;}
+.wm-close{background:none; border:none; font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--navy); opacity:.6; cursor:pointer;}
+.wm-close:hover{opacity:1;}
+.wm-sub{font-size:13px; opacity:.6; margin-bottom:20px;}
+.wm-opt{display:flex; justify-content:space-between; align-items:center; width:100%; padding:14px 16px; margin-bottom:10px; background:transparent; border:1px solid var(--border); color:var(--navy); font-family:var(--sans); font-size:14px; font-weight:500; cursor:not-allowed;}
+.wm-opt span{font-family:var(--mono); font-size:11px; letter-spacing:.06em; opacity:.5;}
+.navlinks .mwallet{display:none;}
+@media(max-width:640px){.navlinks .mwallet{display:block;}}
+.wm-note{font-family:var(--mono); font-size:11px; letter-spacing:.04em; opacity:.5; margin-top:8px;}
+
+/* mobile menu */
+@media(max-width:640px){
+  .navlinks.open{display:flex; flex-direction:column; gap:0; position:absolute; top:100%; left:0; right:0; background:var(--cream); padding:6px 20px 24px; border-bottom:1px solid var(--border); z-index:30;}
+  .navlinks.open a{padding:16px 0; border-bottom:1px solid var(--border); font-size:15px; opacity:.7;}
+  .navlinks.open a.active{opacity:1; border-bottom-color:var(--coral);}
+  .navlinks.open a.active::after{display:none;}
+  .navlinks.open .mwallet{background:var(--navy); color:var(--cream); text-align:center; padding:14px 18px; margin-top:22px; border-bottom:none; opacity:1; font-size:13px; font-weight:500;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap"><nav>
+    <div class="logo"><div class="mark"><span></span><span></span><span></span><span></span></div>GRIDCREDITS</div>
+    <div class="navlinks">
+      <a href="index.html">HOME</a><a href="earn.html" class="active">EARN</a><a href="burn.html">BURN</a><a href="how-to-earn.html">HOW TO EARN</a><a href="docs.html">DOCS</a><a class="mwallet" href="#">CONNECT WALLET</a>
+    </div>
+    <div class="navright">
+      <a class="btn-navy" href="#">CONNECT WALLET</a>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav></div>
+</header>
+
+<div class="page-header">
+  <div class="wrap ph-grid">
+    <div>
+      <div class="eyebrow">GRIDCREDITS / ECONOMY</div>
+      <h1 class="title">EARN</h1>
+      <div class="ph-sub">Put your GridCredits characters to work.</div>
+      <p class="ph-desc">Active characters participate in the GridCredits economy and accumulate $CREDITS through supported activities.</p>
+    </div>
+    <div class="ph-pattern">
+      <div class="ph-sq" style="top:14%;left:18%;background:var(--yellow)"></div>
+      <div class="ph-sq" style="bottom:20%;right:22%;background:var(--coral)"></div>
+      <div class="ph-sq" style="top:50%;right:14%;background:var(--navy);opacity:.5"></div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="summary">
+      <div class="sum-col">
+        <div class="sum-label">YOUR CREDITS</div>
+        <div class="sum-num">—</div>
+        <div class="sum-unit">$CREDITS</div>
+      </div>
+      <div class="sum-col">
+        <div class="sum-label">TODAY</div>
+        <div class="sum-num">—</div>
+        <div class="sum-unit">$CREDITS</div>
+      </div>
+      <div class="sum-col">
+        <div class="sum-label">THIS WEEK</div>
+        <div class="sum-num">—</div>
+        <div class="sum-unit">$CREDITS</div>
+      </div>
+      <div class="sum-col">
+        <div class="sum-label">TOTAL EARNED</div>
+        <div class="sum-num">—</div>
+        <div class="sum-unit">$CREDITS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="chars-head">
+      <div class="section-title">YOUR CHARACTERS</div>
+      <div class="chars-meta">0 CHARACTERS</div>
+    </div>
+    <div class="chars-toolbar"><input class="search" type="text" placeholder="Search character..." disabled></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>CHARACTER</th><th>STATUS</th><th>EARNING POWER</th><th>EARNED</th><th>ACTION</th></tr></thead>
+        <tbody>
+          <tr class="empty-row"><td colspan="6">
+            <div class="empty-state">
+              <div class="empty-title">NO CHARACTERS YET</div>
+              <p>You don't own any GridCredits characters yet.</p>
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-foot">
+      <span>Showing 0 characters</span>
+      <div class="pagination-frame"><span>‹</span><span class="on">1</span><span>2</span><span>3</span><span>›</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="act-head">
+      <div class="section-title">EARNING ACTIVITY</div>
+      <a href="#">VIEW ALL ↗</a>
+    </div>
+    <div class="activity-list">
+      <div class="empty-state">
+        <div class="empty-title">NO EARNING ACTIVITY YET</div>
+        <p>Your earning activity will appear here once your characters are active.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap how-earn">
+    <div class="section-title">HOW EARNING WORKS</div>
+    <div class="how-copy">
+      <p>GridCredits characters can participate in the ecosystem once activated. Active characters accumulate $CREDITS according to their current earning parameters.</p>
+      <p>Earning rates, activation requirements, and reward mechanics will be connected to the live GridCredits system later.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <div>
+      <h2>YOUR CHARACTER.<br>YOUR CREDITS.</h2>
+      <p>The character you collect becomes part of the GridCredits economy.</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn-cream" href="index.html">VIEW CHARACTERS ↗</a>
+      <a class="btn-outline" href="#">OPEN OPENSEA ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-left">GRIDCREDITS<span>© 2026 GRIDCREDITS</span></div>
+    <div class="foot-links"><a href="index.html">HOME</a><a href="earn.html">EARN</a><a href="burn.html">BURN</a><a href="how-to-earn.html">HOW TO EARN</a><a href="docs.html">DOCS</a></div>
+  </div>
+</footer>
+
+<script>
+document.querySelector('.hamburger')?.addEventListener('click',()=>{
+  document.querySelector('.navlinks').classList.toggle('open');
+});
+document.querySelectorAll('.navlinks a').forEach(a=>a.addEventListener('click',()=>{document.querySelector('.navlinks').classList.remove('open');}));
+document.querySelectorAll('.thumb[data-path]').forEach(el=>{
+  el.style.backgroundImage="url('"+el.getAttribute('data-path')+"')";
+  el.style.backgroundSize='cover';
+  el.style.backgroundPosition='center';
+});
+</script>
+<script type="module" src="wallet.js"></script>
+</body>
+</html>
