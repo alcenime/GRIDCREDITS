@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GridCredits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F4EE; --navy:#18284D; --coral:#FF6257; --yellow:#FFC94A;
+  --navy-soft:#e7e6df; --border:rgba(24,40,77,0.14);
+  --sans:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+body{background:var(--cream); color:var(--navy); font-family:var(--sans); -webkit-font-smoothing:antialiased;}
+img{max-width:100%; display:block;}
+.wrap{max-width:1240px; margin:0 auto; padding:0 32px;}
+a{color:inherit; text-decoration:none;}
+
+/* placeholder art blocks */
+.art{position:relative; background:var(--cream) url('') center/cover no-repeat; border:1px solid var(--border); overflow:hidden;}
+.art::before{content:'';position:absolute; inset:0; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:14px 14px; opacity:.35;}
+.art::after{content:attr(data-path); position:absolute; left:8px; bottom:8px; font-family:var(--mono); font-size:10px; color:var(--navy); opacity:.4; letter-spacing:.02em;}
+
+/* navbar */
+header{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:rgba(247,244,238,.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--border);}
+nav{display:flex; align-items:center; justify-content:space-between; height:76px;}
+.logo{display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px; letter-spacing:.01em;}
+.mark{display:grid; grid-template-columns:repeat(2,7px); gap:3px;}
+.mark span{width:7px; height:7px;}
+.mark span:nth-child(1){background:var(--navy);} .mark span:nth-child(2){background:var(--coral);}
+.mark span:nth-child(3){background:var(--yellow);} .mark span:nth-child(4){background:var(--navy);}
+.navlinks{display:flex; gap:34px; font-size:14px; font-weight:500;}
+.navlinks a{opacity:.75; transition:opacity .15s;} .navlinks a:hover{opacity:1;}
+.navlinks a.active{opacity:1; position:relative;}
+.navlinks a.active::after{content:'';position:absolute; left:0; right:0; bottom:-26px; height:2px; background:var(--coral);}
+.navright{display:flex; align-items:center; gap:20px;}
+.btn-navy{background:var(--navy); color:var(--cream); font-size:13px; font-weight:500; padding:10px 18px; letter-spacing:.02em;}
+.hamburger{display:none; flex-direction:column; gap:4px; background:none; border:none; cursor:pointer;}
+.hamburger span{width:22px; height:2px; background:var(--navy);}
+
+/* hero */
+.hero{padding:100px 0 90px;}
+.hero-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.14em; opacity:.55; margin-bottom:22px;}
+h1.headline{font-size:clamp(52px,7vw,92px); line-height:.94; font-weight:700; letter-spacing:-.02em;}
+.sub{font-size:20px; font-weight:500; margin-top:18px;}
+.desc{font-size:15px; line-height:1.6; opacity:.7; margin-top:16px; max-width:38ch;}
+.hero-actions{display:flex; gap:14px; margin-top:34px;}
+.btn-primary{background:var(--navy); color:var(--cream); padding:14px 22px; font-size:14px; font-weight:500;}
+.btn-ghost{border:1px solid var(--navy); padding:14px 22px; font-size:14px; font-weight:500;}
+.stats{display:flex; gap:44px; margin-top:56px;}
+.stat b{font-size:20px; display:block;}
+.stat span{font-family:var(--mono); font-size:11px; letter-spacing:.06em; opacity:.55;}
+.hero-art{position:relative; aspect-ratio:1/1.1;}
+.hero-art .art{width:100%; height:100%;}
+.hero-img{display:block; width:100%; height:100%; object-fit:cover; border:1px solid var(--border); background:var(--cream);}
+.accent-sq{position:absolute; width:10px; height:10px;}
+
+/* how it works */
+section{padding:90px 0;}
+.section-title{font-size:34px; font-weight:700; letter-spacing:-.01em; margin-bottom:52px;}
+.hiw-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border);}
+.hiw-item{background:var(--cream); padding:30px 26px;}
+.hiw-num{font-family:var(--mono); font-size:12px; opacity:.5; margin-bottom:16px;}
+.hiw-art{width:100%; aspect-ratio:1; margin-bottom:20px;}
+.hiw-art::before,.hiw-art::after{display:none;}
+.hiw-art img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+.hiw-item h3{font-size:16px; margin-bottom:8px;}
+.hiw-item p{font-size:13px; opacity:.65; line-height:1.55;}
+
+/* the economy */
+.economy{position:relative;}
+.economy::before{content:'';position:absolute; inset:0; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:64px 64px; opacity:.25; pointer-events:none;}
+.economy-grid{position:relative; display:grid; grid-template-columns:0.85fr 1.15fr; gap:80px;}
+.economy-intro h2{font-size:40px; font-weight:700; letter-spacing:-.01em; line-height:1.05; margin-bottom:24px;}
+.economy-intro p{font-size:15px; line-height:1.65; opacity:.7; max-width:36ch;}
+.eco-sub{padding:34px 0;}
+.eco-sub:first-child{padding-top:0;}
+.eco-sub + .eco-sub{border-top:1px solid var(--border);}
+.eco-num{font-family:var(--mono); font-size:13px; opacity:.45; letter-spacing:.04em; margin-bottom:12px;}
+.eco-sub h3{font-size:19px; font-weight:700; margin-bottom:10px; letter-spacing:-.005em;}
+.eco-sub p{font-size:14px; line-height:1.65; opacity:.68; max-width:52ch;}
+.economy-statement{margin-top:64px; padding-top:44px; border-top:1px solid var(--border); font-size:22px; font-weight:700; line-height:1.5; letter-spacing:-.005em;}
+
+
+/* credits section */
+.credits{background:var(--navy); color:var(--cream);}
+.credits .wrap{display:grid; grid-template-columns:1.2fr 1fr; gap:50px; align-items:center; padding:90px 32px;}
+.credits h2{font-size:38px; line-height:1.05; font-weight:700;}
+.credits p{opacity:.7; margin-top:18px; font-size:15px; line-height:1.6; max-width:34ch;}
+.blocks{display:grid; grid-template-columns:repeat(5,1fr); gap:8px;}
+.blocks div{aspect-ratio:1;}
+
+/* footer */
+footer .wrap{display:flex; justify-content:space-between; align-items:center; padding:44px 32px; border-top:1px solid var(--border);}
+.foot-links{display:flex; gap:26px; font-size:13px; opacity:.65;}
+.foot-left span{display:block; font-family:var(--mono); font-size:11px; opacity:.45; margin-top:4px;}
+
+@media(max-width:900px){
+  .hiw-grid{grid-template-columns:repeat(2,1fr);}
+  .economy-grid{grid-template-columns:1fr; gap:48px;}
+  .credits .wrap{grid-template-columns:1fr; padding:70px 28px;}
+}
+@media(max-width:640px){
+  .wrap{padding:0 20px;}
+  .navlinks,.navright .btn-navy{display:none;}
+  .hamburger{display:flex;}
+  .hero{padding:56px 0 60px;}
+  .hero-grid{grid-template-columns:1fr; gap:44px;}
+  .stats{flex-wrap:wrap; gap:28px;}
+  .hiw-grid{grid-template-columns:1fr;}
+  .economy-intro h2{font-size:30px;}
+  .economy-statement{font-size:18px;}
+  .section-title{font-size:26px;}
+  .credits h2{font-size:28px;}
+  footer .wrap{flex-direction:column; align-items:flex-start; gap:16px;}
+  .foot-links{flex-wrap:wrap; gap:14px 22px;}
+}
+/* wallet modal (visual only) */
+.wm{position:fixed; inset:0; background:rgba(24,40,77,.45); display:none; align-items:center; justify-content:center; z-index:200; padding:20px;}
+.wm.open{display:flex;}
+.wm-box{background:var(--cream); border:1px solid var(--border); width:100%; max-width:380px; padding:28px;}
+.wm-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.wm-head h3{font-size:16px; font-weight:700; letter-spacing:.04em;}
+.wm-close{background:none; border:none; font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--navy); opacity:.6; cursor:pointer;}
+.wm-close:hover{opacity:1;}
+.wm-sub{font-size:13px; opacity:.6; margin-bottom:20px;}
+.wm-opt{display:flex; justify-content:space-between; align-items:center; width:100%; padding:14px 16px; margin-bottom:10px; background:transparent; border:1px solid var(--border); color:var(--navy); font-family:var(--sans); font-size:14px; font-weight:500; cursor:not-allowed;}
+.wm-opt span{font-family:var(--mono); font-size:11px; letter-spacing:.06em; opacity:.5;}
+.navlinks .mwallet{display:none;}
+@media(max-width:640px){.navlinks .mwallet{display:block;}}
+.wm-note{font-family:var(--mono); font-size:11px; letter-spacing:.04em; opacity:.5; margin-top:8px;}
+
+/* mobile menu */
+@media(max-width:640px){
+  .navlinks.open{display:flex; flex-direction:column; gap:0; position:absolute; top:100%; left:0; right:0; background:var(--cream); padding:6px 20px 24px; border-bottom:1px solid var(--border); z-index:30;}
+  .navlinks.open a{padding:16px 0; border-bottom:1px solid var(--border); font-size:15px; opacity:.7;}
+  .navlinks.open a.active{opacity:1; border-bottom-color:var(--coral);}
+  .navlinks.open a.active::after{display:none;}
+  .navlinks.open .mwallet{background:var(--navy); color:var(--cream); text-align:center; padding:14px 18px; margin-top:22px; border-bottom:none; opacity:1; font-size:13px; font-weight:500;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap"><nav>
+    <div class="logo"><div class="mark"><span></span><span></span><span></span><span></span></div>GRIDCREDITS</div>
+    <div class="navlinks">
+      <a href="index.html" class="active">HOME</a><a href="earn.html">EARN</a><a href="burn.html">BURN</a><a href="how-to-earn.html">HOW TO EARN</a><a href="docs.html">DOCS</a><a class="mwallet" href="#">CONNECT WALLET</a>
+    </div>
+    <div class="navright">
+      <a class="btn-navy" href="#">CONNECT WALLET</a>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav></div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">SQUARES / SPACE / CHARACTERS</div>
+      <h1 class="headline">GRID<br>CREDITS</h1>
+      <div class="sub">Characters built from a simple grid.</div>
+      <p class="desc">A collection of modular characters built from a simple grid. Collect characters, activate them, earn $GRIDS, or burn your NFT through the ecosystem.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="https://opensea.io/collection/gridcredits-182674825/edit/overview" target="_blank" rel="noopener noreferrer">VIEW COLLECTION ↗</a>
+        <a class="btn-ghost" href="#how">HOW IT WORKS</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>10,000</b><span>UNIQUE CHARACTERS</span></div>
+        <div class="stat"><b>1 GRID</b><span>INFINITE VARIATIONS</span></div>
+        <div class="stat"><b>$GRIDS</b><span>UTILITY TOKEN</span></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <img class="hero-img" src="assets/image/pixelform.gif" alt="GridCredits character" width="800" height="880">
+      <div class="accent-sq" style="top:-8px;left:-8px;background:var(--coral)"></div>
+      <div class="accent-sq" style="bottom:20%;right:-10px;background:var(--yellow)"></div>
+      <div class="accent-sq" style="top:40%;left:-14px;background:var(--navy)"></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-title">HOW IT WORKS</div>
+    <div class="hiw-grid">
+      <div class="hiw-item"><div class="hiw-num">01</div><div class="hiw-art art"><img src="assets/image/collect.jpg" alt="Collect" loading="lazy"></div><h3>COLLECT</h3><p>Collect unique GridCredits characters on OpenSea.</p></div>
+      <div class="hiw-item"><div class="hiw-num">02</div><div class="hiw-art art"><img src="assets/image/active.jpg" alt="Active" loading="lazy"></div><h3>ACTIVATE</h3><p>Activate your NFT to participate in the GridCredits ecosystem.</p></div>
+      <div class="hiw-item"><div class="hiw-num">03</div><div class="hiw-art art"><img src="assets/image/earn.jpg" alt="Earn" loading="lazy"></div><h3>EARN</h3><p>Use your active character to earn $GRIDS through the ecosystem.</p></div>
+      <div class="hiw-item"><div class="hiw-num">04</div><div class="hiw-art art"><img src="assets/image/burn.jpg" alt="Burn" loading="lazy"></div><h3>BURN</h3><p>Burn your NFT permanently to receive $GRIDS according to the burn rules.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="economy" id="economy">
+  <div class="wrap economy-grid">
+    <div class="economy-intro">
+      <h2>THE ECONOMY</h2>
+      <p>GridCredits is built around a simple relationship between characters and $GRIDS. Your NFT can participate in the ecosystem through activation, earning, and burning.</p>
+    </div>
+    <div class="economy-subs">
+      <div class="eco-sub">
+        <div class="eco-num">01</div>
+        <h3>COLLECT &amp; ACTIVATE</h3>
+        <p>Every GridCredits character begins as a collectible. Once owned, the NFT can be activated to participate in the GridCredits ecosystem.</p>
+      </div>
+      <div class="eco-sub">
+        <div class="eco-num">02</div>
+        <h3>EARN $GRIDS</h3>
+        <p>Active NFTs can participate in the earning system and generate $GRIDS through supported activities.</p>
+      </div>
+      <div class="eco-sub">
+        <div class="eco-num">03</div>
+        <h3>BURN</h3>
+        <p>Owners can permanently burn an NFT and receive $GRIDS according to the burn rules. Once burned, the NFT cannot be recovered.</p>
+      </div>
+      <div class="economy-statement">COLLECT THE CHARACTER.<br>ACTIVATE THE GRID.<br>EARN OR BURN.</div>
+    </div>
+  </div>
+</section>
+
+<section class="credits">
+  <div class="wrap">
+    <div>
+      <h2>ONE GRID.<br>MANY STORIES.</h2>
+      <p>$GRIDS is designed to power the GridCredits ecosystem.</p>
+    </div>
+    <div class="blocks">
+      <div style="background:var(--coral)"></div><div></div><div style="background:var(--yellow)"></div><div></div><div style="background:var(--coral)"></div>
+      <div></div><div style="background:var(--yellow)"></div><div></div><div style="background:var(--coral)"></div><div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-left">GRIDCREDITS<span>© 2026 GRIDCREDITS</span></div>
+    <div class="foot-links"><a href="index.html">HOME</a><a href="earn.html">EARN</a><a href="burn.html">BURN</a><a href="how-to-earn.html">HOW TO EARN</a><a href="docs.html">DOCS</a><a href="https://x.com/GridCredits" target="_blank" rel="noopener noreferrer">X</a><a href="https://opensea.io/collection/gridcredits-182674825/edit/overview" target="_blank" rel="noopener noreferrer">OPENSEA</a></div>
+  </div>
+</footer>
+
+<script>
+document.querySelector('.hamburger')?.addEventListener('click',()=>{
+  document.querySelector('.navlinks').classList.toggle('open');
+});
+document.querySelectorAll('.navlinks a').forEach(a=>a.addEventListener('click',()=>{document.querySelector('.navlinks').classList.remove('open');}));
+</script>
+<script type="module" src="wallet.js"></script>
+</body>
+</html>
